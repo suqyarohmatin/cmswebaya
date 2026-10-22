@@ -108,22 +108,11 @@ export const ecommerceService = {
    * Update existing product (admin)
    * PUT /api/ecommerce/admin/products/{id}
    */
-   async updateOrderStatus(
-    id: number,
-    status?: string,
-    notes?: string,
-    paymentStatus?: string,
-    trackingNumber?: string
-  ): Promise<EcommerceOrder> {
-    const payload: Record<string, any> = {};
-    if (status) payload.status = status;
-    if (paymentStatus) payload.payment_status = paymentStatus;
-    if (notes !== undefined) payload.notes = notes;
-    if (trackingNumber) payload.tracking_number = trackingNumber;
-
-    const response = await apiClient.put(`/ecommerce/admin/orders/${id}`, payload);
+    async updateProduct(id: number, payload: ProductUpdatePayload): Promise<EcommerceProduct> {
+    const response = await apiClient.put(`/ecommerce/admin/products/${id}`, payload);
     return response.data?.data ?? response.data;
   },
+
 
   /**
    * Delete product (admin)
@@ -226,16 +215,18 @@ export const ecommerceService = {
    * Update order status and/or payment status
    * PUT /api/ecommerce/admin/orders/{id}
    */
-  async updateOrderStatus(
+   async updateOrderStatus(
     id: number,
     status?: string,
     notes?: string,
-    paymentStatus?: string
+    paymentStatus?: string,
+    trackingNumber?: string
   ): Promise<EcommerceOrder> {
     const payload: Record<string, any> = {};
     if (status) payload.status = status;
     if (paymentStatus) payload.payment_status = paymentStatus;
     if (notes !== undefined) payload.notes = notes;
+    if (trackingNumber) payload.tracking_number = trackingNumber;
 
     const response = await apiClient.put(`/ecommerce/admin/orders/${id}`, payload);
     return response.data?.data ?? response.data;
