@@ -77,22 +77,36 @@ class UserController extends Controller
     }
     public function login(Request $req)
     {
-        $req->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+    $req->validate([
+        'email' => 'required|email',
+        'password' => 'required|string',
+    ]);
 
-        $user = User::where('email', $req->email)->first();
+    $user = User::where('email', $req->email)->first();
 
-        if (!$user || !Hash::check($req->password, $user->password)) {
-            return response()->json(["Error" => "Sorry, email or password doesn't match"], 401);
-        }
-
-        $token = $user->createToken('admin-token')->plainTextToken;
-        $user->token = $token;
-
-        return response()->json($user);
+    if (!$user || !Hash::check($req->password, $user->password)) {
+        return response()->json([
+            'message' => 'Email atau password salah.'
+        ], 401);
     }
+
+    // Hanya SuperAdmin (1) dan Admin (2)
+    // yang boleh login melalui endpoint Admin.
+    if (!in_array((int) $user->status, [1, 2], true)) {
+        return response()->json([
+            'message' => 'Akun ini bukan akun Admin.'
+        ], 403);
+    }
+
+    $token = $user->createToken('admin-token')->plainTextToken;
+
+    return response()->json([
+        'message' => 'Login Admin berhasil.',
+        'token' => $token,
+        'user' => $user,
+        ]);
+    }
+
     public function getAllUsers()
     {
         // Fetch all users from the User table

@@ -51,6 +51,13 @@ class CustomerAuthController extends Controller
             ], 401);
         }
 
+         // Tambahkan pemeriksaan role Customer di sini.
+    if (!$user->isCustomer()) {
+        return response()->json([
+            'message' => 'Akun ini bukan akun Customer.',
+        ], 403);
+    }
+
         $token = $user->createToken('customer-token')->plainTextToken;
 
         return response()->json([
