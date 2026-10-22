@@ -169,6 +169,7 @@ class AdminOrderAuthorizationTest extends TestCase
         $updateRes = $this->withHeader('Authorization', 'Bearer ' . $this->operatorToken3)
             ->putJson("/api/ecommerce/admin/orders/{$this->order->id}", [
                 'status' => 'shipped',
+                'tracking_number' => 'JNT-TEST-0001',
             ]);
         $updateRes->assertStatus(200);
     }

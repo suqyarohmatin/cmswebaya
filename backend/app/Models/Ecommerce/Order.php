@@ -69,12 +69,15 @@ class Order extends Model
         'subtotal',
         'shipping_cost',
         'total',
+        'tracking_number',
+        'shipped_at',
     ];
 
     protected $casts = [
         'subtotal' => 'float',
         'shipping_cost' => 'float',
         'total' => 'float',
+        'shipped_at' => 'datetime',
     ];
 
     public function customer(): BelongsTo

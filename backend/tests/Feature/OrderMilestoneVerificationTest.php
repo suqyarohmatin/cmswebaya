@@ -608,6 +608,7 @@ class OrderMilestoneVerificationTest extends TestCase
         $shippedRes = $this->withHeader('Authorization', 'Bearer ' . $this->adminToken)
             ->putJson("/api/ecommerce/admin/orders/{$orderId}", [
                 'status' => 'shipped',
+                'tracking_number' => 'JNT-TEST-0001',
             ]);
         $shippedRes->assertStatus(200);
         $this->assertEquals('shipped', $shippedRes->json('data.status'));

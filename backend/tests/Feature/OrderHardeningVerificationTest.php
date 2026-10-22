@@ -288,6 +288,7 @@ class OrderHardeningVerificationTest extends TestCase
             $response = $this->withHeader('Authorization', 'Bearer ' . $this->adminToken)
                 ->putJson("/api/ecommerce/admin/orders/{$order->id}", [
                     'status' => $targetStatus,
+                    'tracking_number' => 'JNT-TEST-0001',
                 ]);
 
             $response->assertStatus(200);
@@ -358,6 +359,7 @@ class OrderHardeningVerificationTest extends TestCase
             $response = $this->withHeader('Authorization', 'Bearer ' . $this->adminToken)
                 ->putJson("/api/ecommerce/admin/orders/{$order->id}", [
                     'status' => $targetStatus,
+                    'tracking_number' => 'JNT-TEST-0001',
                 ]);
 
             // Must fail with 422

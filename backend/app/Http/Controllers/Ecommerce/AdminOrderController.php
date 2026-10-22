@@ -95,6 +95,11 @@ class AdminOrderController extends Controller
                 Rule::in(Order::PAYMENT_STATUSES),
             ],
             'notes' => ['nullable', 'string', 'max:500'],
+            'tracking_number' => [Rule::requiredIf(fn () => $request->input('status') === Order::STATUS_SHIPPED && empty($order->tracking_number)),
+                'nullable',
+                'string',
+                'max:100',
+            ],
         ], [
             'status.required' => 'Status pesanan wajib diisi.',
             'status.in' => 'Status pesanan tidak valid.',
@@ -188,6 +193,13 @@ class AdminOrderController extends Controller
 
             if (array_key_exists('notes', $validated)) {
                 $lockedOrder->notes = $validated['notes'];
+            }
+                        if (!empty($validated['tracking_number'])) {
+                $lockedOrder->tracking_number = $validated['tracking_number'];
+            }
+
+            if (($validated['status'] ?? null) === Order::STATUS_SHIPPED && !$lockedOrder->shipped_at) {
+                $lockedOrder->shipped_at = now();
             }
             $lockedOrder->save();
         });

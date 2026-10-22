@@ -202,6 +202,9 @@ export interface EcommerceOrder {
   shipping_cost: number;
   total: number;
   transfer_proof_url?: string | null;
+  courier?: string | null;
+  tracking_number?: string | null;
+  shipped_at?: string | null;
   payment_details?: {
     bank_name: string;
     account_number: string;
