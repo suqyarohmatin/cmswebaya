@@ -45,7 +45,10 @@ const LoginPage = () => {
             // Handle berbagai format response Laravel:
             // 1. Direct: { status: 1, token: '...' }
             // 2. Nested: { data: { status: 1, token: '...' } }
-            const userData = response.data?.data ?? response.data;
+            const body = response.data;
+            const userData = body?.user
+                ? { ...body.user, token: body.token }
+                : (body?.data ?? body);
 
             if (!userData || userData.status === undefined) {
                 console.error('Format response tidak dikenali:', response.data);
